@@ -8,6 +8,7 @@ const {
 } = require("../middleware/dataFormatValidation.js");
 
 // controllers
+const getReportingDataController = require("../controllers/getReportingDataController.js");
 
 // configuration and constants
 
@@ -21,7 +22,8 @@ router.get(
     "/report",
     nonEmptyPlusDataFormatValidation(["reporting_range"]),
     dataFormatValidation(["start_date", "end_date"]), // these are optional params
-    validationResultHandler
+    validationResultHandler,
+    getReportingDataController
 );
 
 module.exports = router;
