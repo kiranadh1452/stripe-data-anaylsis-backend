@@ -58,9 +58,21 @@ const getAnalyticsFromBalanceTransaction = async (options) => {
             ...aggregateArray,
         ]);
 
-        console.log(reportData);
+        const reducerFunc = (acc, curr) => {
+            if (!acc[curr._id.created]) acc[curr._id.created] = [];
+            acc[curr._id.created].push(curr);
+            return acc;
+        };
+        const analyseDate = (dataArray) => {
+            const data = dataArray.reduce(reducerFunc, {});
+            return data;
+        };
 
-        return reportData;
+        const formatedData = analyseDate(reportData);
+
+        console.log(formatedData);
+
+        return formatedData;
     } catch (error) {
         throw new Error("Error in getAnalyticsFromBalanceTransaction" + error);
     }
