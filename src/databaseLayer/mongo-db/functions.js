@@ -1,6 +1,18 @@
 // import the models
 const StripeBalanceTxn = require("./models/balanceTransactionSchema");
 
+const connectToDatabase = async (url) => {
+    try {
+        await mongoose.connect(url, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("Connected to database");
+    } catch (error) {
+        console.error("Error in connecting to database: " + error);
+    }
+};
+
 const getAnalyticsFromBalanceTransaction = async (options) => {
     try {
         const { startDate, endDate, reporting_range } = options;
@@ -69,5 +81,6 @@ const formatGenerator = (reporting_range) => {
 };
 
 module.exports = {
+    connectToDatabase,
     getAnalyticsFromBalanceTransaction,
 };

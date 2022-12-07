@@ -1,6 +1,6 @@
 // import database functions from the database layer
 const databasePicker = require("../databaseLayer/databaseFunc");
-const db = databasePicker("mongo");
+const db = databasePicker();
 
 const getReportingDataController = async (req, res) => {
     try {

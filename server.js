@@ -5,6 +5,10 @@ const dotenv = require("dotenv");
 const express = require("express");
 const bodyParser = require("body-parser");
 
+// database connection
+const database = require("./src/databaseLayer/databaseFunc")();
+database.connectToDatabase(process.env.MONGO_URL);
+
 // routers
 const analyticsQueryRouter = require("./src/routers/analyticsQueryRouter");
 

@@ -1,7 +1,8 @@
+const DEFAULT_DATABASE = "mongo";
 const mongoDbFunctions = require("./mongo-db/functions");
 
-const databasePicker = (database) => {
-    switch (database) {
+const databasePicker = () => {
+    switch (DEFAULT_DATABASE) {
         case "mongo":
             return mongoDbFunctions;
 
