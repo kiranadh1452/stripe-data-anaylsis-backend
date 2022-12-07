@@ -7,20 +7,20 @@ const bodyParser = require("body-parser");
 
 // database connection
 const database = require("./src/databaseLayer/databaseFunc")();
-database.connectToDatabase(process.env.MONGO_URL);
+dotenv.config();
+database.connectToDatabase(process.env.MONGO_URI_ONLINE);
 
 // routers
 const analyticsQueryRouter = require("./src/routers/analyticsQueryRouter");
 
 // constants
-const PORT = require("./constants/appConfig").PORT;
+const PORT = process.env.PORT || 5020;
 
 // swagger for documentation
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 
 // configure application
-dotenv.config();
 const app = express();
 app.set("port", PORT);
 // use morgan logger here

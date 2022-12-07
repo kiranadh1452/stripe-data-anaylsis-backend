@@ -31,16 +31,18 @@ const dataFormatValidation = (dataArray) => {
             switch (data) {
                 case "reporting_range":
                     validations.push(
-                        check(data).isIn(["daily", "monthly", "annually"])
+                        check(data)
+                            .isIn(["daily", "monthly", "annually"])
+                            // .optional()
                     );
                     break;
 
                 case "start_date":
-                    validations.push(check(data).isISO8601());
+                    validations.push(check(data).optional().isISO8601());
                     break;
 
                 case "end_date":
-                    validations.push(check(data).isISO8601());
+                    validations.push(check(data).optional().isISO8601());
                     break;
 
                 default:

@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 // import the models
 const StripeBalanceTxn = require("./models/balanceTransactionSchema");
 
@@ -18,38 +20,45 @@ const getAnalyticsFromBalanceTransaction = async (options) => {
         const { startDate, endDate, reporting_range } = options;
 
         const format = formatGenerator(reporting_range);
+        const aggregateArray = [];
 
-        // setting the format correctly based on reporting range
-
-        const reportData = await StripeBalanceTxn.aggregate([
-            {
+        if (startDate && endDate) {
+            aggregateArray.push({
                 $match: {
                     created: {
                         $gte: startDate,
                         $lte: endDate,
                     },
                 },
-            },
-            {
-                $group: {
-                    _id: {
-                        reporting_category: "$reporting_category",
-                        created: {
-                            $dateToString: {
-                                format,
-                                date: {
-                                    $toDate: {
-                                        $multiply: ["$created", 1000],
-                                    },
+            });
+        }
+        aggregateArray.push({
+            $group: {
+                _id: {
+                    reporting_category: "$reporting_category",
+                    created: {
+                        $dateToString: {
+                            format,
+                            date: {
+                                $toDate: {
+                                    $multiply: ["$created", 1000],
                                 },
                             },
                         },
                     },
-                    totalNet: { $sum: "$net" },
-                    totalAmount: { $sum: "$amount" },
                 },
+                totalNet: { $sum: "$net" },
+                totalAmount: { $sum: "$amount" },
             },
+        });
+
+        // setting the format correctly based on reporting range
+
+        const reportData = await StripeBalanceTxn.aggregate([
+            ...aggregateArray,
         ]);
+
+        console.log(reportData);
 
         return reportData;
     } catch (error) {
