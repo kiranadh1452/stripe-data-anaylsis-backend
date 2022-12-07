@@ -6,6 +6,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 // routers
+const analyticsQueryRouter = require("./src/routers/analyticsQueryRouter");
 
 // constants
 const PORT = require("./constants/appConfig").PORT;
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // add routes to server
+app.use("/analytics", analyticsQueryRouter);
 app.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 // for any endpoint that is not found, follow this route
